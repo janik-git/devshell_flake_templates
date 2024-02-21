@@ -26,7 +26,7 @@
                 --experimental-features 'nix-command flakes' \
                 flake init \
                 --template \
-                "github:the-nix-way/dev-templates#''${TEMPLATE}"
+                "github:janik-git/devshell_flake_templates#''${TEMPLATE}"
             '';
             update = prev.writeScriptBin "update" ''
               for dir in `ls -d */`; do # Iterate through all the templates
