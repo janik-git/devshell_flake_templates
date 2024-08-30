@@ -66,6 +66,11 @@
           path = ./python;
           description = "Python development environment";
           };
+
+        cuda = {
+          path = ./cuda;
+          description = "cuda development environment";
+          };
         };
 
         # Aliases

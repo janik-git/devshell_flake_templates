@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOs/nixpkgs/23.11";
+    nixpkgs.url = "github:NixOs/nixpkgs/24.05";
     unstable.url = "github:NixOs/nixpkgs/nixos-unstable";
     utils.url = "github:numtide/flake-utils";
     utils.inputs.nixpkgs.follows = "nixpkgs";
@@ -9,11 +9,6 @@
     "x86_64-linux"
   ](system:
     let 
-      # pkgs = import nixpkgs{
-      #   inherit system;
-      #   config.allowUnfree=true;
-      #   config.cudaSupport=true;
-      # };
       pkgs = nixpkgs.legacyPackages.${system};
       unstable_pkgs = unstable.legacyPackages.${system};
     in 
@@ -23,27 +18,17 @@
         buildInputs = with pkgs ; [
             unstable_pkgs.uv
             python3
+            # just activates the env
             python3Packages.venvShellHook
-            autoPatchelfHook
         ];
         propoagtedBuildInputs=[pkgs.stdenv.cc.cc.lib];
         venvDir = "./venv";
         postVenvCreation = ''
-          unset SOURCE_DATE_EPOCH
+          # unset SOURCE_DATE_EPOCH
           uv pip install -U pip setuptools wheel
           uv pip install -r requirements.txt
           uv pip install -e 
-          autoPatchelf ./venv
         '';
-        # shellHook = '' 
-        #   $SHELL
-        #   exit
-        # '' ;
-        postShellHook = ''
-          export SOURCE_DATE_EPOCH=315532800;
-          unset LD_LIBARY_PATH
-        '';
-        preferLocalBuild = true; 
 
       };
     }
